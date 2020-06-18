@@ -1,0 +1,43 @@
+version: '2'
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: docker/app.dockerfile
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+  web:
+    build:
+      context: ./
+      dockerfile: docker/web.dockerfile
+    working_dir: /var/www
+    volumes_from:
+      - app
+    ports:
+      - 8080:80
+  db:
+    build:
+      context: ./
+      dockerfile: docker/db.dockerfile
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - data:/var/lib/postgres
+  node:
+    build:
+      context: .
+      dockerfile: docker/node.dockerfile
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    environment:
+      - NODE_ENV=${NODE_ENV}
+volumes:
+  data:
+    driver: "local"
