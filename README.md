@@ -1,0 +1,2 @@
+# laraplate
+Laravel Boilerplate code
