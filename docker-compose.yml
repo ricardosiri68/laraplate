@@ -28,7 +28,7 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - data:/var/lib/postgres
+      - data:/var/lib/postgresql/data
   node:
     build:
       context: .
